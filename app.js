@@ -25,12 +25,16 @@ app.set('view engine', 'ejs');
 
 const signUpRouter = require('./routes/signUpRouter');
 const loginRouter = require('./routes/loginRouter');
+const joinRouter = require('./routes/joinRouter');
+const logoutRouter = require('./routes/logoutRouter');
 
 app.use('/sign-up', signUpRouter);
 app.use('/login', loginRouter);
+app.use('/join', joinRouter);
+app.use('/logout', logoutRouter);
 
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('index', { user: req.user });
 });
 
 const PORT = process.env.PORT || 3000;
