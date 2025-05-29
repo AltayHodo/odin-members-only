@@ -27,14 +27,28 @@ const signUpRouter = require('./routes/signUpRouter');
 const loginRouter = require('./routes/loginRouter');
 const joinRouter = require('./routes/joinRouter');
 const logoutRouter = require('./routes/logoutRouter');
+const messageRouter = require('./routes/messageRouter');
 
 app.use('/sign-up', signUpRouter);
 app.use('/login', loginRouter);
 app.use('/join', joinRouter);
 app.use('/logout', logoutRouter);
+app.use('/messages', messageRouter);
 
-app.get('/', (req, res) => {
-  res.render('index', { user: req.user });
+const pool = require('./db/pool');
+
+app.get('/', async (req, res) => {
+  const result = await pool.query(`
+    SELECT messages.*, users.username
+    FROM messages
+    JOIN users ON messages.author_id = users.id
+    ORDER BY timestamp DESC
+  `);
+  console.log(result.rows)
+  res.render('index', {
+    user: req.user,
+    messages: result.rows,
+  });
 });
 
 const PORT = process.env.PORT || 3000;

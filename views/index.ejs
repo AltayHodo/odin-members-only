@@ -2,27 +2,54 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Home</title>
+    <title>Clubhouse Home</title>
   </head>
   <body>
     <h1>Welcome to the Clubhouse</h1>
 
     <% if (!user) { %>
-      <p>You are not logged in.</p>
-      <p>
-        <a href="/login">Log In</a> |
-        <a href="/sign-up">Sign Up</a>
-      </p>
+    <p>You are not logged in.</p>
+    <p>
+      <a href="/login">Log In</a> |
+      <a href="/sign-up">Sign Up</a>
+    </p>
     <% } else { %>
-      <p>
-        Hello, <%= user.username %>!
-        <% if (user.membership_status) { %>
-          <strong>(You are a club member)</strong>
+    <p>
+      Hello, <%= user.username %>! <% if (user.membership_status) { %>
+      <strong>(You are a club member)</strong>
+      <a href="/messages/new">Create a New Message</a> <% } else { %>
+      <a href="/join">Join the Club</a>
+      <% } %>
+    </p>
+    <p>
+      <a href="/logout">Log Out</a>
+    </p>
+    <% } %>
+
+    <hr />
+
+    <h2>Messages</h2>
+
+    <% if (messages.length === 0) { %>
+    <p>No messages yet. Be the first to post one!</p>
+    <% } else { %>
+    <ul>
+      <% messages.forEach(msg => { %>
+      <li>
+        <strong><%= msg.title %></strong><br />
+        <%= msg.text %><br />
+        <% if (user && user.membership_status) { %>
+        <small
+          >By <%= msg.username %> on <%= new
+          Date(msg.timestamp).toLocaleString() %></small
+        >
         <% } else { %>
-          <a href="/join">Join the Club</a>
+        <small>Author and date visible to club members only.</small>
         <% } %>
-      </p>
-      <p><a href="/logout">Log Out</a></p>
+      </li>
+      <hr />
+      <% }) %>
+    </ul>
     <% } %>
   </body>
 </html>

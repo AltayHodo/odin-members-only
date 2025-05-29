@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>New Message</title>
+  </head>
+  <body>
+    <h1>Create a New Message</h1>
+
+    <% if (error) { %>
+      <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/messages" method="POST">
+      <label for="title">Title:</label>
+      <input id="title" name="title" type="text" required />
+
+      <label for="content">Content:</label>
+      <textarea id="content" name="content" required></textarea>
+
+      <button type="submit">Post</button>
+    </form>
+
+    <p><a href="/">Back to home</a></p>
+  </body>
+</html>
