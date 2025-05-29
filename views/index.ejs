@@ -17,10 +17,19 @@
     <p>
       Hello, <%= user.username %>! <% if (user.membership_status) { %>
       <strong>(You are a club member)</strong>
-      <a href="/messages/new">Create a New Message</a> <% } else { %>
+      | <a href="/messages/new">Create a New Message</a> <% } else { %> |
       <a href="/join">Join the Club</a>
       <% } %>
     </p>
+
+    <p>
+      <% if (user.admin_status) { %>
+      <strong>(You are an admin)</strong>
+      <% } else { %>
+      <a href="/admin">Become an Admin</a>
+      <% } %>
+    </p>
+
     <p>
       <a href="/logout">Log Out</a>
     </p>
@@ -42,9 +51,22 @@
         <small
           >By <%= msg.username %> on <%= new
           Date(msg.timestamp).toLocaleString() %></small
-        >
+        ><br />
         <% } else { %>
-        <small>Author and date visible to club members only.</small>
+        <small>Author and date visible to club members only.</small><br />
+        <% } %> <% if (user && user.admin_status) { %>
+        <form
+          action="/messages/<%= msg.id %>/delete"
+          method="POST"
+          style="display: inline"
+        >
+          <button
+            type="submit"
+            onclick="return confirm('Are you sure you want to delete this message?')"
+          >
+            Delete
+          </button>
+        </form>
         <% } %>
       </li>
       <hr />

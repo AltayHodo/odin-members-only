@@ -28,12 +28,14 @@ const loginRouter = require('./routes/loginRouter');
 const joinRouter = require('./routes/joinRouter');
 const logoutRouter = require('./routes/logoutRouter');
 const messageRouter = require('./routes/messageRouter');
+const adminRouter = require('./routes/adminRouter')
 
 app.use('/sign-up', signUpRouter);
 app.use('/login', loginRouter);
 app.use('/join', joinRouter);
 app.use('/logout', logoutRouter);
 app.use('/messages', messageRouter);
+app.use('/admin', adminRouter);
 
 const pool = require('./db/pool');
 
@@ -44,12 +46,12 @@ app.get('/', async (req, res) => {
     JOIN users ON messages.author_id = users.id
     ORDER BY timestamp DESC
   `);
-  console.log(result.rows)
   res.render('index', {
     user: req.user,
     messages: result.rows,
   });
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Express app listening on port ${PORT}!`));

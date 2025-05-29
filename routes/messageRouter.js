@@ -23,4 +23,12 @@ router.post('/', ensureAuthenticated, async (req, res) => {
   res.redirect('/');
 });
 
+router.post('/:id/delete', async (req, res) => {
+  if (!req.user || !req.user.admin_status) return res.status(403).send('Unauthorized');
+
+  const { id } = req.params;
+  await pool.query('DELETE FROM MESSAGES WHERE id = $1', [id]);
+  res.redirect('/');
+})
+
 module.exports = router;
